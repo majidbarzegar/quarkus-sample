@@ -9,10 +9,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/api/bank/core/customer")
+@Path("/api/bank/core/customers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CustomerRecourse {
+public class CustomerResource {
 
     @Inject
     CustomerService customerService;
@@ -20,8 +20,8 @@ public class CustomerRecourse {
     CustomerMapper customerMapper;
 
     @POST
-    public ResponseDto<CustomerDto> save(Customer customer) {
-        Customer savedCustomer = customerService.save(customer);
+    public ResponseDto<CustomerDto> save(CustomerDto dto) {
+        Customer savedCustomer = customerService.save(customerMapper.toEntity(dto));
         return new ResponseDto<>(
                 customerMapper.toDto(savedCustomer)
         );
@@ -38,6 +38,14 @@ public class CustomerRecourse {
     @Path("/{id}")
     public ResponseDto<CustomerDto> findById(@PathParam("id") Long id) {
         Customer customer = customerService.findById(id);
+        return new ResponseDto<>(
+                customerMapper.toDto(customer)
+        );
+    }
+
+    @GET
+    public ResponseDto<CustomerDto> lookup(@QueryParam("accountNumber") String accountNumber) {
+        Customer customer = customerService.findByAccountNumber(accountNumber);
         return new ResponseDto<>(
                 customerMapper.toDto(customer)
         );

@@ -11,10 +11,10 @@ import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
 
-@Path("/api/bank/core/transfer")
+@Path("/api/bank/core/transfers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TransferRecourse {
+public class TransferResource {
 
     @Inject
     TransferService transferService;
